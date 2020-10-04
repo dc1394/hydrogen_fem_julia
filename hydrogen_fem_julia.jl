@@ -42,6 +42,14 @@ function do_run(param, val)
     return eigenval[1]
 end
 
+save_result(val) = let
+    open("result.csv", "w" ) do fp
+        for i = 1:length(val.phi)
+            println(fp, @sprintf "%.14f, %.14f, %.14f" val.node_r_glo[i] val.phi[i] 2.0 * exp(- val.node_r_glo[i]))
+        end
+    end
+end
+
 get_A_matrix_element(e, le, p, q) = let
     ed = float(e - 1);
     @match p begin
@@ -93,13 +101,13 @@ function make_data(param, val)
     end
 
     for e = 1:param.ELE_TOTAL
-        val.nod_num_seg[e, 1] = e;
-        val.nod_num_seg[e, 2] = e + 1;
+        val.node_num_seg[e, 1] = e;
+        val.node_num_seg[e, 2] = e + 1;
     end
         
     for e = 1:param.ELE_TOTAL
         for i = 1:2
-            val.node_r_ele[e, i] = val.node_r_glo[val.nod_num_seg[e, i]];
+            val.node_r_ele[e, i] = val.node_r_glo[val.node_num_seg[e, i]];
         end
     end
 end
@@ -126,8 +134,8 @@ function make_global_matrix(param, val)
     for e = 1:param.ELE_TOTAL
         for i = 1:2
             for j = 1:2
-                val.hg[val.nod_num_seg[e, i], val.nod_num_seg[e, j]] += val.mat_A_ele[e, i, j];
-                val.ug[val.nod_num_seg[e, i], val.nod_num_seg[e, j]] += val.mat_B_ele[e, i, j];
+                val.hg[val.node_num_seg[e, i], val.node_num_seg[e, j]] += val.mat_A_ele[e, i, j];
+                val.ug[val.node_num_seg[e, i], val.node_num_seg[e, j]] += val.mat_B_ele[e, i, j];
             end
         end
     end
@@ -153,12 +161,3 @@ function normalize(val)
         val.phi[i] *= -a_1;
     end
 end
-
-save_result(val) = let
-    open("result.csv", "w" ) do fp
-        for i = 1:length(val.phi)
-            println(fp, @sprintf "%.14f, %.14f, %.14f" val.node_r_glo[i] val.phi[i] 2.0 * exp(- val.node_r_glo[i]))
-        end
-    end
-end
-        

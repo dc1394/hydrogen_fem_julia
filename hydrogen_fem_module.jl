@@ -12,7 +12,7 @@ module Hydrogen_FEM
         length::Array{Float64, 1}
         mat_A_ele::Array{Float64, 3}
         mat_B_ele::Array{Float64, 3}
-        nod_num_seg::Array{Int64, 2}
+        node_num_seg::Array{Int64, 2}
         node_r_ele::Array{Float64, 2}
         node_r_glo::Array{Float64, 1}
         phi::Array{Float64, 1}
