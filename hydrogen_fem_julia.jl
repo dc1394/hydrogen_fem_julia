@@ -4,8 +4,10 @@ module Hydrogen_FEM
     using Match
     using Printf
 
+    const NODE_TOTAL = 5001
+
     function construct()
-        param = Hydrogen_FEM.Hydrogen_FEM_param("result.csv", 5000, 5000 - 1, 30.0, 0.0)
+        param = Hydrogen_FEM.Hydrogen_FEM_param("result.csv", NODE_TOTAL, NODE_TOTAL - 1, 30.0, 0.0)
         val =  Hydrogen_FEM.Hydrogen_FEM_variables(
             zeros(param.NODE_TOTAL, param.NODE_TOTAL),
             zeros(param.ELE_TOTAL),
