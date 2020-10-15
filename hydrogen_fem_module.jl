@@ -1,4 +1,4 @@
-module Hydrogen_FEM
+module Hydrogen_FEM_module
     struct Hydrogen_FEM_param
         RESULT_FILENAME::String
         NODE_TOTAL::Int64
