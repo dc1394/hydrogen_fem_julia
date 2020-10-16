@@ -1,4 +1,6 @@
 module Hydrogen_FEM_module
+    using LinearAlgebra
+    
     struct Hydrogen_FEM_param
         RESULT_FILENAME::String
         NODE_TOTAL::Int64
@@ -8,7 +10,7 @@ module Hydrogen_FEM_module
     end
 
     mutable struct Hydrogen_FEM_variables
-        hg::Array{Float64, 2}
+        hg::Symmetric{Float64,Array{Float64,2}}
         length::Array{Float64, 1}
         mat_A_ele::Array{Float64, 3}
         mat_B_ele::Array{Float64, 3}
@@ -16,6 +18,6 @@ module Hydrogen_FEM_module
         node_r_ele::Array{Float64, 2}
         node_r_glo::Array{Float64, 1}
         phi::Array{Float64, 1}
-        ug::Array{Float64, 2}
+        ug::Symmetric{Float64,Array{Float64,2}}
     end
 end
