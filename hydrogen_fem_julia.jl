@@ -11,13 +11,13 @@ module Hydrogen_FEM
         param = Hydrogen_FEM_module.Hydrogen_FEM_param("result.csv", NODE_TOTAL, NODE_TOTAL - 1, 30.0, 0.0)
         val = Hydrogen_FEM_module.Hydrogen_FEM_variables(
             Symmetric(zeros(param.ELE_TOTAL, param.ELE_TOTAL)),
-            zeros(param.ELE_TOTAL),
-            zeros(param.ELE_TOTAL, 2, 2),
-            zeros(param.ELE_TOTAL, 2, 2),
-            zeros(param.ELE_TOTAL, 2),
-            zeros(param.ELE_TOTAL, 2),
-            zeros(param.NODE_TOTAL),
-            zeros(param.NODE_TOTAL),
+            Array{Float64}(undef, param.ELE_TOTAL),
+            Array{Float64, 3}(undef, param.ELE_TOTAL, 2, 2),
+            Array{Float64, 3}(undef, param.ELE_TOTAL, 2, 2),
+            Array{Int64, 2}(undef, param.ELE_TOTAL, 2),
+            Array{Float64, 2}(undef, param.ELE_TOTAL, param.ELE_TOTAL),
+            Array{Float64}(undef, param.NODE_TOTAL),
+            Array{Float64}(undef, param.NODE_TOTAL),
             Symmetric(zeros(param.ELE_TOTAL, param.ELE_TOTAL)))
         
         return param, val
