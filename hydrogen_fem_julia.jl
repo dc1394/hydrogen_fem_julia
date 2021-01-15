@@ -45,6 +45,9 @@ module Hydrogen_FEM
         # 固有ベクトルの要素数を増やす
         resize!(val.phi, NODE_TOTAL)
 
+        # 端点を0にする
+        val.phi[NODE_TOTAL] = 0.0
+
         # 固有ベクトル（波動関数）を規格化
         normalize!(val)
 
@@ -183,6 +186,6 @@ module Hydrogen_FEM
             sum += (f0 + 4.0 * f1 + f2)
         end
         
-        val.phi .*= (-1.0 / sqrt(sum * val.length[1] / 3.0))
+        val.phi = map(x -> abs(x) / sqrt(sum * val.length[1] / 3.0), val.phi)
     end
 end
