@@ -8,7 +8,7 @@ module Hydrogen_FEM
     const NODE_TOTAL = 5000
 
     function construct()
-        param = Hydrogen_FEM_module.Hydrogen_FEM_param("result.csv", NODE_TOTAL, NODE_TOTAL - 1, 30.0, 0.0)
+        param = Hydrogen_FEM_module.Hydrogen_FEM_param("eigenval.csv", "eigenfunc.csv", NODE_TOTAL, NODE_TOTAL - 1, 30.0, 0.0)
         val = Hydrogen_FEM_module.Hydrogen_FEM_variables(
             Symmetric(zeros(param.ELE_TOTAL, param.ELE_TOTAL)),
             Array{Float64}(undef, param.ELE_TOTAL),
@@ -51,13 +51,21 @@ module Hydrogen_FEM
         # 固有ベクトル（波動関数）を規格化
         normalize!(val)
 
-        return eigenval[1]
+        return eigenval
     end
 
-    save_result(val) = let
-        open("result.csv", "w" ) do fp
+    save_eigenfunc(param, val) = let
+        open(param.EIGENFUNC_FILENAME, "w" ) do fp
             for i = 1:length(val.phi)
                 println(fp, @sprintf "%.14f, %.14f, %.14f" val.node_r_glo[i] val.phi[i] 2.0 * exp(- val.node_r_glo[i]))
+            end
+        end
+    end
+
+    save_eigenval(param, eigenval) = let
+        open(param.EIGENVALUE_FILENAME, "w" ) do fp
+            for i = 1:length(eigenval)
+                println(fp, @sprintf "%d, %.14f, %.14f" i eigenval[i] -0.5 * 1.0 / float(i * i))
             end
         end
     end
