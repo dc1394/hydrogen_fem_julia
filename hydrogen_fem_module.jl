@@ -2,8 +2,8 @@ module Hydrogen_FEM_module
     using LinearAlgebra
     
     struct Hydrogen_FEM_param
-        EIGENVALUE_FILENAME::String
         EIGENFUNC_FILENAME::String
+        EIGENVAL_FILENAME::String
         NODE_TOTAL::Int64
         ELE_TOTAL::Int64
         R_MAX::Float64
