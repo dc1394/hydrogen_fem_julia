@@ -37,7 +37,7 @@ module Hydrogen_FEM
         boundary_conditions!(param, val, hg_tmp, ug_tmp)
 
         # 一般化固有値問題を解く
-        eigenval, phi = eigen(val.hg, val.ug)
+        eigenval, phi = eigen!(val.hg, val.ug)
         
         # 基底状態の固有ベクトルを取り出す
         val.phi = @view(phi[:,1])
@@ -94,7 +94,6 @@ module Hydrogen_FEM
 
             2 =>
                 @match q begin
-                    1 => return -0.5 * le * (ed * ed + ed + 1.0 / 3.0) - le * le * (ed / 6.0 + 1.0 / 12.0)
                     2 => return 0.5 * le * (ed * ed + ed + 1.0 / 3.0) - le * le * (ed / 3.0 + 0.25)
                     _ => return 0.0
                 end
@@ -115,7 +114,6 @@ module Hydrogen_FEM
 
             2 =>
                 @match q begin
-                    1 => return le * le * le * (ed * ed / 6.0 + ed / 6.0 + 0.05)
                     2 => return le * le * le * (ed * ed / 3.0 + ed / 2.0 + 0.2)
                     _ => return 0.0
                 end
@@ -153,8 +151,8 @@ module Hydrogen_FEM
         # 要素行列の各成分を計算
         @inbounds for e = 1:param.ELE_TOTAL
             le = val.length[e]
-            for i = 1:2
-                for j = 1:2
+            for j = 1:2
+                for i = 1:j
                     val.mat_A_ele[e, i, j] = get_A_matrix_element(e, le, i, j)
                     val.mat_B_ele[e, i, j] = get_B_matrix_element(e, le, i, j)
                     end
@@ -167,8 +165,8 @@ module Hydrogen_FEM
         ug_tmp = Symmetric(zeros(param.NODE_TOTAL, param.NODE_TOTAL))
 
         @inbounds for e = 1:param.ELE_TOTAL
-            for i = 1:2
-                for j = 1:2
+            for j = 1:2
+                for i = 1:j
                     hg_tmp.data[val.node_num_seg[e, i], val.node_num_seg[e, j]] += val.mat_A_ele[e, i, j]
                     ug_tmp.data[val.node_num_seg[e, i], val.node_num_seg[e, j]] += val.mat_B_ele[e, i, j]
                 end
