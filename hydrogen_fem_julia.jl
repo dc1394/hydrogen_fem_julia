@@ -2,20 +2,21 @@ module Hydrogen_FEM
     include("hydrogen_fem_module.jl")
     using LinearAlgebra
     using Match
+    using MKL
     using Printf
     using .Hydrogen_FEM_module
 
-    const NODE_TOTAL = 5000
+    const NODE_TOTAL = 10000
 
     function construct()
-        param = Hydrogen_FEM_module.Hydrogen_FEM_param("eigenfunc.csv", "eigenval.csv", NODE_TOTAL, NODE_TOTAL - 1, 30.0, 0.0)
+        param = Hydrogen_FEM_module.Hydrogen_FEM_param("eigenfunc.csv", "eigenval.csv", NODE_TOTAL, NODE_TOTAL - 1, 1000.0, 0.0)
         val = Hydrogen_FEM_module.Hydrogen_FEM_variables(
             Symmetric(zeros(param.ELE_TOTAL, param.ELE_TOTAL)),
             Array{Float64}(undef, param.ELE_TOTAL),
             Array{Float64, 3}(undef, param.ELE_TOTAL, 2, 2),
             Array{Float64, 3}(undef, param.ELE_TOTAL, 2, 2),
             Array{Int64, 2}(undef, param.ELE_TOTAL, 2),
-            Array{Float64, 2}(undef, param.ELE_TOTAL, param.ELE_TOTAL),
+            Array{Float64, 2}(undef, param.ELE_TOTAL, 2),
             Array{Float64}(undef, param.NODE_TOTAL),
             Array{Float64}(undef, param.NODE_TOTAL),
             Symmetric(zeros(param.ELE_TOTAL, param.ELE_TOTAL)))
