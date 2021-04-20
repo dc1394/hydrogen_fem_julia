@@ -178,8 +178,7 @@ module Hydrogen_FEM
 
     function normalize!(val)
         sum = 0.0
-        len = length(val.phi)
-        max = len - 2
+        max = length(val.phi) - 2
 
         # Simpsonの公式によって数値積分する
         @inbounds @simd for i = 1:2:max
