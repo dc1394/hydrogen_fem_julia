@@ -3,6 +3,7 @@ module Hydrogen_FEM
     using LinearAlgebra
     using Match
     using MKL
+    using Printf
     using .Hydrogen_FEM_module
 
     const NODE_TOTAL = 10000
